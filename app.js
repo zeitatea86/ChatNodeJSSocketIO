@@ -14,6 +14,7 @@ const io = new Server(server);
 //
 const session = require("express-session");
 const passport = require('passport');
+const { register } = require("node:module");
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -53,6 +54,7 @@ app.post("/register", function (req, res) {
             console.log("User added " + req.body.username);
             // res.render("secrets");
             res.render("index",{username:req.body.username});
+            //console.log(newUser.email);
         })
         .catch(function (err) {
             console.log(err);
@@ -94,10 +96,9 @@ app.get('/logout', function (req, res, next) {
 
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
-        io.emit('chat message', msg,socket.id);
+        io.emit('chat message', msg);
         //let username = req.body.username;
-        console.log('message: ' + msg);
-        console.log(socket.id);
+        console.log('message: ' + msg + '  from  '+socket.id);
       });
     console.log('a user connected');
 });

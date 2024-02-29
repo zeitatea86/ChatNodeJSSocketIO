@@ -4,8 +4,11 @@
 <head>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Socket.IO chat</title>
-  <h1>Welcome to chat, <%= username %>
+  <h1 id="welcomeMessage" style="color:#332c2ce0;background-color: aquamarine;">
+    Welcome to chat, <%= username %>
   </h1>
+  <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+  <!-- <a class="btn btn-dark btn-lg" href="/submit" role="button">Other button</a> -->
   <style>
     body {
       margin: 0;
@@ -78,31 +81,35 @@
     const messages = document.getElementById('messages');
 
 
-userToBeSentToBackEnd = '<%=username%>';
-//socket.emit('setSocketId', data);
+    let userToBeSentToBackEnd = '<%=username%>';
 
+    //socket.emit('setSocketId', data);
+    const colorOfName = "#" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value) {
-        socket.emit('chat message', input.value);
+        socket.emit('chat message', [userToBeSentToBackEnd, input.value].join(" : "));
         input.value = '';
+        const item = document.getElementById('mesajul');
+        item.style.backgroundColor = colorOfName;
       }
     });
-    const colorOfName="#"+Math.floor(Math.random()*10)+Math.floor(Math.random()*10)+Math.floor(Math.random()*10);
+
     socket.on('chat message', (msg) => {
       const item = document.createElement('li');
-      item.setAttribute("id","mesajul");
+      item.setAttribute("id", "mesajul");
+      item.setAttribute("name", "mesajul");
       // const usernameId=document.createElement('li');
       // var username = '<%- JSON.stringify(username) %>'.replace('"','').replace('"','');
       // //username.style.color="red";
       // usernameId.setAttribute("id","numele");
-      
+
       // usernameId.style.backgroundColor = colorOfName; 
       // usernameId.style.fontStyle="20px";
       // usernameId.textContent=username;
       // messages.appendChild(usernameId);
       // item.textContent = username.split('@')[0]+" : " +msg;
-      item.textContent=msg;
+      item.textContent = msg;
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
     });
