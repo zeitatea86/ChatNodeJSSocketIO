@@ -80,18 +80,17 @@
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
 
-
+    // const colorOfName = "#" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
+    
     let userToBeSentToBackEnd = '<%=username%>';
-
+    // let userToBeSentToBackEnd = '<h2 style="color:red">'+'<%=username%>'+'</h2>';
     //socket.emit('setSocketId', data);
-    const colorOfName = "#" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
+    
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value) {
         socket.emit('chat message', [userToBeSentToBackEnd, input.value].join(" : "));
         input.value = '';
-        const item = document.getElementById('mesajul');
-        item.style.backgroundColor = colorOfName;
       }
     });
 
@@ -113,6 +112,7 @@
       messages.appendChild(item);
       window.scrollTo(0, document.body.scrollHeight);
     });
+
   </script>
 </body>
 

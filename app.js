@@ -60,18 +60,22 @@ app.post("/register", function (req, res) {
             console.log(err);
         });
 });
-
+let u1=[];
 app.post("/login", function (req, res) {
     let username = req.body.username;
     const password = req.body.password;
+
+    const colorOfName = "#" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) 
+    + Math.floor(Math.random() * 10);
     async function foundUsers() {
         const foundUser = await User.findOne({ email: username });
         if (foundUser) {
             if (foundUser.password === password) {
+                u1.push(username,colorOfName);
                 //res.render("secrets");
                 //res.render("chat");
                 //res.sendFile(join(__dirname, 'index.html'),username=username);
-                res.render("index",{ username: username });
+                res.render("index",{ username: username,colorOfName:colorOfName });
             }
             else {
                 console.log("wrong passwd : " + password);
@@ -81,6 +85,7 @@ app.post("/login", function (req, res) {
             console.log("wrong user : " + username);
             res.render("login");
         }
+        console.log(u1);
     }
     foundUsers();
 });
@@ -97,15 +102,14 @@ app.get('/logout', function (req, res, next) {
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
-        //let username = req.body.username;
         console.log('message: ' + msg + '  from  '+socket.id);
       });
-    console.log('a user connected');
+    //console.log('a user connected');
 });
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    //console.log('a user connected');
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        //console.log('user disconnected');
     });
 });
 
